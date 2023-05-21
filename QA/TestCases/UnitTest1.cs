@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace TestCases;
 
@@ -16,10 +18,7 @@ public class Tests
     public void TestAPI()
     {
         // Create a new RestSharp request instance
-        RestRequest request = new RestRequest("/{api}", Method.GET);
-
-        // Set the URL parameter
-        request.AddUrlSegment("api", "GetAllProcessors");
+        RestRequest request = new RestRequest("https://localhost:5001/GetAllProcessors", Method.GET);
 
         // Execute the request
         IRestResponse response = client.Execute(request);
@@ -30,8 +29,16 @@ public class Tests
         // Get the response content
         string content = response.Content;
 
-            // Perform assertions on the response content
+        List<Processor> processor = JsonConvert.DeserializeObject<List<Processor>>(content);
+        // Perform assertions on the response content
         Assert.IsNotNull(content);
         Assert.IsTrue(content.Contains("Snapdragon 710"));
         }
+}
+
+public class Processor
+{
+    public int ProcessorID { get; set; }
+    public string ProcessorName { get; set; }
+
 }
