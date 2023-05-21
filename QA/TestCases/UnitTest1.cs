@@ -29,11 +29,13 @@ public class Tests
         // Get the response content
         string content = response.Content;
 
-        List<Processor> processor = JsonConvert.DeserializeObject<List<Processor>>(content);
-        // Perform assertions on the response content
+        List<Processor> processors = JsonConvert.DeserializeObject<List<Processor>>(content);
+        
+        foreach(Processor x in processors){
         Assert.IsNotNull(content);
         Assert.IsTrue(content.Contains("Snapdragon 710"));
         }
+    }
 }
 
 public class Processor
