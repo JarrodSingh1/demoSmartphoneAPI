@@ -32,8 +32,21 @@ Test Approach and Methodology
 > Integration tests for API endpoints
 
 Test Cases
-> Detailed test cases for each API endpoint, covering positive 
-  and negative scenarios, edge cases, and error conditions.
+Test Case 1: POST /AddProcessors
+> Verify successful creation of a new processor.
+> Verify error scenarios, such as invalid request or duplicate entry.
+
+Test Case 2: GET /GetAllProcessors
+> Verify retrieving all processors from the API.
+> Verify the correctness of the returned data.
+
+Test Case 3: GET /GetAllBrands
+> Verify retrieving all brands from the API.
+> Verify the correctness of the returned data.
+
+Test Case 4: GET /GetAllSmartphones
+> Verify retrieving all smartphones from the API.
+> Verify the correctness of the returned data.
 
 Test Data
 > Predefined test data for initial testing
