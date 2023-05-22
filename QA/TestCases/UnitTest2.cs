@@ -1,39 +1,55 @@
-namespace YourNamespace
+namespace TestCases;
+
+public class TestCase2
 {
-    [TestFixture]
-    public class ApiTests
+    private RestClient client;
+
+    [SetUp]
+    public void Setup()
     {
-        private RestClient client;
+        //RestSharp client instance
+        client = new RestClient("https://localhost:5001");
+    }
 
-        [SetUp]
-        public void Setup()
+    [Test]
+    public void TestAPI()
+    {
+        //CREATE REQUEST INSTANCE
+        RestRequest request = new RestRequest("/GetAllProcessors", Method.GET);
+
+        //HEADER
+        request.AddHeader("accept", "text/plain");
+        
+        //EXECUTE Reqquest
+        IRestResponse response = client.Execute(request);
+
+        //VERIFY STATUS CODE
+        Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
+
+        //RESPONSE
+        string content = response.Content;
+
+        List<Processor> processors = JsonSerializer.Deserialize<List<Processor>>(content);
+        
+        foreach(Processor x in processors)
         {
-            //CREATE RESTSHARP REST CLIENT INSTANCE
-            client = new RestClient("https://localhost:5001");
-        }
+        
+        int processorID = x.ProcessorID;
+        string processName = x.ProcessorName;
 
-        [Test]
-        public void CreateProcessorTest()
-        {
-            //REQUEST
-            var request = new RestRequest("/AddProcessor", Method.POST);
-            
-            //HEADER
-            request.AddHeader("accept", "*/*");
-            request.AddHeader("Content-Type", "application/json");
+        //RESPONSE BODY
+        Assert.IsNotNull(processorID);
+        Assert.IsNotEmpty(processName);
 
-            //BODY
-            request.AddJsonBody(new { processorID = "0", processorName = "TestProcessor" });
-
-            //EXECUTE REQUEST
-            var response = client.Execute(request);
-
-            //ASSERTIONS
-            Assert.AreEqual(201, (int)response.StatusCode);
-            Assert.IsTrue(response.IsSuccessful); 
-            
-            //RESPONSE BODY ASSERTION
-            Assert.That(response.Content, Is.EqualTo("New process added."));
+        //VERIFY CORRECTNESS
+        Assert.IsTrue(processName.Contains("Snapdragon") || processName.Contains("MediaTek"));
         }
     }
+}
+
+public class Processor
+{
+    public int ProcessorID { get; set; }
+    public string ProcessorName { get; set; }
+
 }
