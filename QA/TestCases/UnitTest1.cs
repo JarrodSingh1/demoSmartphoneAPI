@@ -15,13 +15,13 @@ public class Tests
     public void TestAPI()
     {
         // Create a new RestSharp request instance
-        RestRequest request = new RestRequest("https://localhost:5001/GetAllProcessors", Method.GET);
+        RestRequest request = new RestRequest("/GetAllProcessors", Method.GET);
 
         // Execute the request
         IRestResponse response = client.Execute(request);
 
         // Verify the response
-        Assert.AreEqual(System.Net.HttpStatusCode.OK, response.StatusCode);
+        Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK));
 
         // Get the response content
         string content = response.Content;
