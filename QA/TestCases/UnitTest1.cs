@@ -1,6 +1,3 @@
-using Newtonsoft.Json;
-using System.Collections.Generic;
-
 namespace TestCases;
 
 public class Tests
@@ -29,11 +26,17 @@ public class Tests
         // Get the response content
         string content = response.Content;
 
-        List<Processor> processors = JsonConvert.DeserializeObject<List<Processor>>(content);
+        List<Processor> processors = JsonSerializer.Deserialize<List<Processor>>(content);
         
-        foreach(Processor x in processors){
-        Assert.IsNotNull(content);
-        Assert.IsTrue(content.Contains("Snapdragon 710"));
+        foreach(Processor x in processors)
+        {
+        
+        int processorID = x.ProcessorID;
+        string processName = x.ProcessorName;
+
+        Assert.IsNotNull(processorID);
+        Assert.IsNotEmpty(processName);
+        Assert.IsTrue(processName.Contains("Snapdragon") || processName.Contains("MediaTek"));
         }
     }
 }
